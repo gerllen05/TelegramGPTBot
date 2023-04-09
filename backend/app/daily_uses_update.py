@@ -14,5 +14,6 @@ class Update:
         session = get_session(self.engine)
         for user in session.query(User).all():
             user.usedThisDay = 0
+        session.commit()
         session.close()
 
