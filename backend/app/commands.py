@@ -53,9 +53,10 @@ class Commands:
                     # checking if user is allowed to ask questions today
                     if check_daily_quota_exceeded(user):
                         self.bot.reply_to(message, DailyQuotaExceededError)
-                    else: 
-                        user.usedThisDay += 1
-                        session.commit()
+                    else:
+                        if not user.isAdmin:
+                            user.usedThisDay += 1
+                            session.commit()
 
                     wait_msg = self.bot.reply_to(message, WaitAnswer + str(user.dailyQuota - user.usedThisDay))
                     chat_id = message.chat.id
