@@ -10,7 +10,7 @@ COPY ./Pipfile /opt
 COPY ./Pipfile.lock /opt
 WORKDIR /opt
 
-RUN pipenv install --system --deploy
+RUN pip install -r --system --deploy
 
 CMD ["python", "main.py"]
 
