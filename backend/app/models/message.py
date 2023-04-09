@@ -10,7 +10,7 @@ class MessageItem(BASE):
     userId = Column("userId", Integer, ForeignKey("Users.id", ondelete="CASCADE"), nullable=False)
     role = Column("role", String(16), nullable=False)
     content = Column("content", Text, nullable=False)
-    createdAt = Column("tokensCost", DateTime, nullable=False)
+    createdAt = Column("createdAt", DateTime, nullable=False)
     tokensCost = Column("tokensCost", Integer, nullable=False, default=0)
     isForgotten = Column("isForgotten", Boolean, nullable=False)
 
