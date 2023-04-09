@@ -14,14 +14,18 @@ DB_CONFIG = {
     'echo': DEBUG,
 }
 
+print('Creating engine...')
 ENGINE = Database(MAIN_DB_URL, DB_CONFIG).engine
 
+print('Connecting to Telegram API...')
 BOT = TeleBot(TELEGRAM_API_KEY, parse_mode='html')
 
+print('Creating bot commands handler...')
 CONTENT_AMOUNT = 10
 Commands(BOT, ENGINE, GPT_API_KEY, CONTENT_AMOUNT, DEBUG).handle_messages()
 Update(ENGINE)
 
+print('Everything is ready')
 BOT.polling(none_stop=True)
 
 
