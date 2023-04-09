@@ -1,5 +1,7 @@
 mysqlclient
-telebot 
+telebot
+pytz 
 openai 
 sqlalchemy 
-schedule 
+schedule
+ 
