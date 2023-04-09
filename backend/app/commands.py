@@ -1,6 +1,7 @@
 from telebot import TeleBot
 from telebot.types import Message 
 
+from config import DEBUG
 from app.utils.messages import *
 from app.gpt import chat_gpt_query
 from app.utils.helpers import get_session, get_user_by_telegram_id, check_daily_quota_exceeded, get_last_messages
@@ -8,10 +9,9 @@ from app.models import User, MessageItem
 
 class Commands:
 
-    def __init__(self, bot: TeleBot, engine, debug):
+    def __init__(self, bot: TeleBot, engine):
         self.bot = bot
         self.engine = engine
-        self.debug = debug
 
 
     def handle_messages(self):
@@ -38,7 +38,7 @@ class Commands:
 
         @self.bot.message_handler(content_types='text')
         def ask_chat_gpt(message: Message):
-            if self.debug:
+            if DEBUG:
                 print(message.text)
             if not (message.text in ['start', 'help', 'quota']):
                 if len(message.text) > 128:
@@ -64,7 +64,7 @@ class Commands:
                         session.add(user_message)
                         session.commit()
                         
-                        answer = chat_gpt_query(session, user, self.debug)
+                        answer = chat_gpt_query(session, user)
 
                         # adds assistant's answer to database
                         assistant_message = MessageItem(None, user.id, 'assistant', answer[0])

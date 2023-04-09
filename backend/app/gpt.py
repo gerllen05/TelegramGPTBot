@@ -1,19 +1,19 @@
 import openai
 
-from config import GPT_API_KEY, CONTENT_AMOUNT
+from config import DEBUG, GPT_API_KEY, CONTENT_AMOUNT
 from app.models import MessageItem
 
 
-def chat_gpt_query(session, user, debug):
+def chat_gpt_query(session, user):
     last_msgs = get_last_messages(session, user)
-    if debug:
+    if DEBUG:
         print(last_msgs)
     openai.api_key = GPT_API_KEY
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=last_msgs,
     )
-    if debug:
+    if DEBUG:
         print(response)
     return (response.choices[0].message.content, response.usage)
 
