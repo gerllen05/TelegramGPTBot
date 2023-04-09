@@ -16,7 +16,7 @@ class Commands:
         self.engine = engine
 
 
-    async def handle_messages(self):
+    def handle_messages(self):
         @self.bot.message_handler(commands=['start', 'help'])
         async def start(message: Message):
             self.bot.send_message(message.chat.id, HelloMessage)
