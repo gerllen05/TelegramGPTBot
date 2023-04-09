@@ -18,7 +18,7 @@ class Commands:
 
     def handle_messages(self):
         @self.bot.message_handler(commands=['start', 'help'])
-        async def start(message: Message):
+        def start(message: Message):
             self.bot.send_message(message.chat.id, HelloMessage)
 
         @self.bot.message_handler(commands=['quota'])
@@ -62,14 +62,14 @@ class Commands:
                         chat_id = message.chat.id
 
                         # adds user's message to database
-                        user_message = MessageItem(user.id, 'user', message.text, datetime.now(TIMEZONE))
+                        user_message = MessageItem(user.id, 'user', message.text, datetime.utcnow())
                         session.add(user_message)
                         session.commit()
                         
                         answer = chat_gpt_query(session, user)
 
                         # adds assistant's answer to database
-                        assistant_message = MessageItem(user.id, 'assistant', answer[0], datetime.now(TIMEZONE))
+                        assistant_message = MessageItem(user.id, 'assistant', answer[0], datetime.utcnow())
                         session.add(assistant_message)
                         session.commit()
 
