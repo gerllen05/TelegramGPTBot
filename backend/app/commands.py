@@ -22,14 +22,14 @@ class Commands:
             self.bot.send_message(message.chat.id, HelloMessage)
 
         @self.bot.message_handler(commands=['quota'])
-        async def get_user_uses(message: Message):
+        def get_user_uses(message: Message):
             session = get_session(self.engine)
             user = get_user_by_telegram_id(session, message)
             self.bot.reply_to(message, f"Your quota: <b>{user.dailyQuota}</b> messages per day. \nYou have <b>{user.dailyQuota - user.usedThisDay}</b> messages left today.")
             session.close()
 
         @self.bot.message_handler(commands=['forget'])
-        async def get_user_uses(message: Message):
+        def get_user_uses(message: Message):
             session = get_session(self.engine)
             user = get_user_by_telegram_id(session, message)
             messages = get_last_messages(session, user)
@@ -39,7 +39,7 @@ class Commands:
             session.close()
 
         @self.bot.message_handler(content_types='text')
-        async def ask_chat_gpt(message: Message):
+        def ask_chat_gpt(message: Message):
             if DEBUG:
                 print(message.text)
             if not (message.text in ['start', 'help', 'quota']):
