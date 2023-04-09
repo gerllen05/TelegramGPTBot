@@ -25,7 +25,7 @@ def get_user_by_telegram_id(session, message):
         return user
     
 def check_daily_quota_exceeded(user: User):
-    if (user.usedThisDay == user.dailyQuota) or user.isAdmin:
+    if (user.usedThisDay == user.dailyQuota) and (not user.isAdmin):
         return True
     else: 
         return False
