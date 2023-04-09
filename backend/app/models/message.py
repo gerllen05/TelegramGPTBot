@@ -14,8 +14,7 @@ class MessageItem(BASE):
     tokensCost = Column("tokensCost", Integer, nullable=False, default=0)
     isForgotten = Column("isForgotten", Boolean, nullable=False)
 
-    def __init__(self, messageId, userId, role, content, createdAt, tokensCost=0, isForgotten=False):
-        self.messageId = messageId
+    def __init__(self, userId, role, content, createdAt, tokensCost=0, isForgotten=False):
         self.userId = userId
         self.role = role
         self.content = content 
@@ -25,7 +24,6 @@ class MessageItem(BASE):
 
     def __repr__(self):
         return f""" 
-            messageId: {self.messageId}  
             userId: {self.userId}
             role: {self.role}
             content: {self.content}
