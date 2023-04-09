@@ -19,7 +19,7 @@ def get_user_by_telegram_id(session, message):
     if user:
         return user
     else:
-        user = User(message.from_user.id, message.from_user.first_name, message.from_user.last_name, datetime.now())
+        user = User(message.from_user.id, message.from_user.first_name, message.from_user.last_name, datetime.utcnow())
         session.add(user)
         session.commit()
         return user

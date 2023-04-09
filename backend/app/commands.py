@@ -46,43 +46,41 @@ class Commands:
                 if len(message.text) > 128:
                     self.bot.reply_to(message, TooBigPromptError + len(message.text))
                 else:
-                    try:
-                        # trying to get user from database, if user does not exist it creates user
-                        session = get_session(self.engine)
-                        user = get_user_by_telegram_id(session, message)
+                    # trying to get user from database, if user does not exist it creates user
+                    session = get_session(self.engine)
+                    user = get_user_by_telegram_id(session, message)
 
-                        # checking if user is allowed to ask questions today
-                        if check_daily_quota_exceeded(user):
-                            self.bot.reply_to(message, DailyQuotaExceededError)
-                        else: 
-                            user.usedThisDay += 1
-                            session.commit()
-
-                        wait_msg = self.bot.reply_to(message, WaitAnswer + str(user.dailyQuota - user.usedThisDay))
-                        chat_id = message.chat.id
-
-                        # adds user's message to database
-                        user_message = MessageItem(user.id, 'user', message.text, datetime.utcnow())
-                        session.add(user_message)
-                        session.commit()
-                        
-                        answer = chat_gpt_query(session, user)
-
-                        # adds assistant's answer to database
-                        assistant_message = MessageItem(user.id, 'assistant', answer[0], datetime.utcnow())
-                        session.add(assistant_message)
+                    # checking if user is allowed to ask questions today
+                    if check_daily_quota_exceeded(user):
+                        self.bot.reply_to(message, DailyQuotaExceededError)
+                    else: 
+                        user.usedThisDay += 1
                         session.commit()
 
-                        user_message.tokensCost += answer[1].prompt_tokens
-                        assistant_message.tokensCost += answer[1].completion_tokens
-                        user.tokensSpent += answer[1].total_tokens
-                        session.commit()
-                        session.close()
+                    wait_msg = self.bot.reply_to(message, WaitAnswer + str(user.dailyQuota - user.usedThisDay))
+                    chat_id = message.chat.id
 
-                        self.bot.delete_message(chat_id, wait_msg.id)
-                        self.bot.reply_to(message, ChatGPTAnswer + f"<i>{answer[0]}</i>")
-                    except Exception as e:
-                        print(e)
+                    # adds user's message to database
+                    user_message = MessageItem(user.id, 'user', message.text, datetime.utcnow())
+                    session.add(user_message)
+                    session.commit()
+                    
+                    answer = chat_gpt_query(session, user)
+
+                    # adds assistant's answer to database
+                    assistant_message = MessageItem(user.id, 'assistant', answer[0], datetime.utcnow())
+                    session.add(assistant_message)
+                    session.commit()
+
+                    user_message.tokensCost += answer[1].prompt_tokens
+                    assistant_message.tokensCost += answer[1].completion_tokens
+                    user.tokensSpent += answer[1].total_tokens
+                    session.commit()
+                    session.close()
+
+                    self.bot.delete_message(chat_id, wait_msg.id)
+                    self.bot.reply_to(message, ChatGPTAnswer + f"<i>{answer[0]}</i>")
+
             
 
 
