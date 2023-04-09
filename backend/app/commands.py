@@ -1,7 +1,9 @@
 from telebot import TeleBot
 from telebot.types import Message 
+from datetime import datetime
+from pytz import timezone
 
-from config import DEBUG
+from config import DEBUG, TIMEZONE
 from app.utils.messages import *
 from app.gpt import chat_gpt_query
 from app.utils.helpers import get_session, get_user_by_telegram_id, check_daily_quota_exceeded, get_last_messages
@@ -60,14 +62,14 @@ class Commands:
                         chat_id = message.chat.id
 
                         # adds user's message to database
-                        user_message = MessageItem(message.id, user.id, 'user', message.text)
+                        user_message = MessageItem(user.id, 'user', message.text, datetime.now(TIMEZONE))
                         session.add(user_message)
                         session.commit()
                         
                         answer = chat_gpt_query(session, user)
 
                         # adds assistant's answer to database
-                        assistant_message = MessageItem(None, user.id, 'assistant', answer[0])
+                        assistant_message = MessageItem(user.id, 'assistant', answer[0], datetime.now(TIMEZONE))
                         session.add(assistant_message)
                         session.commit()
 

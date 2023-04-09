@@ -7,18 +7,19 @@ class MessageItem(BASE):
     __tablename__ = "Messages"
 
     id = Column("id", Integer, primary_key=True)
-    messageId = Column("messageId", Integer)
     userId = Column("userId", Integer, ForeignKey("Users.id", ondelete="CASCADE"), nullable=False)
     role = Column("role", String(16), nullable=False)
     content = Column("content", Text, nullable=False)
+    createdAt = Column("tokensCost", DateTime, nullable=False)
     tokensCost = Column("tokensCost", Integer, nullable=False, default=0)
     isForgotten = Column("isForgotten", Boolean, nullable=False)
 
-    def __init__(self, messageId, userId, role, content, tokensCost=0, isForgotten=False):
+    def __init__(self, messageId, userId, role, content, createdAt, tokensCost=0, isForgotten=False):
         self.messageId = messageId
         self.userId = userId
         self.role = role
         self.content = content 
+        self.createdAt = createdAt
         self.tokensCost = tokensCost
         self.isForgotten = isForgotten
 
@@ -28,5 +29,6 @@ class MessageItem(BASE):
             userId: {self.userId}
             role: {self.role}
             content: {self.content}
+            createdAt: {self.createdAt}
             tokensCost: {self.tokensCost}
             isForgotten: {self.isForgotten} """

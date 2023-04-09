@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from config import TIMEZONE
 from sqlalchemy.orm import sessionmaker
 from app.models import User, MessageItem
 
@@ -18,7 +19,7 @@ def get_user_by_telegram_id(session, message):
     if user:
         return user
     else:
-        user = User(message.from_user.id, message.from_user.first_name, message.from_user.last_name, datetime.now())
+        user = User(message.from_user.id, message.from_user.first_name, message.from_user.last_name, datetime.now(TIMEZONE))
         session.add(user)
         session.commit()
         return user

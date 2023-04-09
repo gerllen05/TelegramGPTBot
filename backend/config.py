@@ -1,4 +1,5 @@
 from os import getenv
+from pytz import timezone
 
 def str_to_bool(debug: str):
     if debug == 'True': 
@@ -19,4 +20,6 @@ TELEGRAM_API_KEY = getenv("TELEGRAM_API_KEY")
 
 GPT_API_KEY = getenv("GPT_API_KEY")
 CONTENT_AMOUNT = int(getenv("CONTENT_AMOUNT"))
+
+TIMEZONE = timezone(getenv("TIMEZONE"))
 
