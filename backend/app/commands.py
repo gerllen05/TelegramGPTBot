@@ -8,11 +8,9 @@ from app.models import User, MessageItem
 
 class Commands:
 
-    def __init__(self, bot: TeleBot, engine, gpt_key, content_amount, debug):
+    def __init__(self, bot: TeleBot, engine, debug):
         self.bot = bot
         self.engine = engine
-        self.gpt_key = gpt_key
-        self.content_amount = content_amount
         self.debug = debug
 
 
@@ -32,7 +30,7 @@ class Commands:
         def get_user_uses(message: Message):
             session = get_session(self.engine)
             user = get_user_by_telegram_id(session, message)
-            messages = get_last_messages(session, user, self.content_amount)
+            messages = get_last_messages(session, user)
             for msg in messages:
                 msg.isForgotten = True
             session.commit()
@@ -62,15 +60,14 @@ class Commands:
                         chat_id = message.chat.id
 
                         # adds user's message to database
-                        user_id = user.id
-                        user_message = MessageItem(message.id, user_id, 'user', message.text)
+                        user_message = MessageItem(message.id, user.id, 'user', message.text)
                         session.add(user_message)
                         session.commit()
                         
-                        answer = chat_gpt_query(session, self.gpt_key, user, self.content_amount, self.debug)
+                        answer = chat_gpt_query(session, user, self.debug)
 
                         # adds assistant's answer to database
-                        assistant_message = MessageItem(None, user_id, 'assistant', answer[0])
+                        assistant_message = MessageItem(None, user.id, 'assistant', answer[0])
                         session.add(assistant_message)
                         session.commit()
 
