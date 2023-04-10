@@ -53,6 +53,7 @@ class Commands:
                     # checking if user is allowed to ask questions today
                     if check_daily_quota_exceeded(user):
                         self.bot.reply_to(message, DailyQuotaExceededError)
+                        return
                     else:
                         if not user.isAdmin:
                             user.usedThisDay += 1
