@@ -81,7 +81,7 @@ class Commands:
                     session.close()
 
                     self.bot.delete_message(chat_id, wait_msg.id)
-                    self.bot.reply_to(message, ChatGPTAnswer + f"<i>{answer[0]}</i>")
+                    self.bot.reply_to(message, ChatGPTAnswer + f"{answer[0]}")
 
             
 
