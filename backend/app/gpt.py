@@ -11,7 +11,7 @@ def chat_gpt_query(session, user):
     openai.api_key = GPT_API_KEY
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=last_msgs,
+        messages=last_msgs[-1],
     )
     if DEBUG:
         print(response)
