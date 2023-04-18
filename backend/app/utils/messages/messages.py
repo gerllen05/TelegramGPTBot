@@ -11,6 +11,6 @@ WaitAnswer = """Your question is being processed, please wait... \nMessages you 
 ChatGPTAnswer = """<b>Answer:</b> \n"""
 
 
-TooBigPromptError = """Max promt length - 128 letters. Your promt contains to much symbols: """
+TooBigPromptError = """Max promt length - 256 letters. Your promt contains to much symbols: """
 
 DailyQuotaExceededError = """Daily quota exceeded for today. Basic users have only 30 uses per day and with subscription users have 100 users per day."""
