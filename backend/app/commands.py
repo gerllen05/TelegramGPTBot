@@ -43,8 +43,8 @@ class Commands:
             if self.debug:
                 print(message.text)
             if not (message.text in ['start', 'help', 'quota']):
-                if len(message.text) > 128:
-                    self.bot.reply_to(message, TooBigPromptError + len(message.text))
+                if len(message.text) > 256:
+                    self.bot.reply_to(message, TooBigPromptError + str(len(message.text)))
                 else:
                     try:
                         # trying to get user from database, if user does not exist it creates user
